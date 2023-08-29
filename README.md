@@ -73,6 +73,10 @@ Before you begin, ensure you have:
      terraform apply
      ```
 
+![image](https://github.com/del-skillsunion/terraform-ecr-ecs-fargate/assets/106639884/e67db44e-56b5-4643-9ab3-e6a17a0dee6f)
+
+![image](https://github.com/del-skillsunion/terraform-ecr-ecs-fargate/assets/106639884/0ebf2344-d98c-4e24-aa8d-26d818afb069)
+
 ## Resource Destruction
 
 1. **Destroy Resources:**
