@@ -1,12 +1,19 @@
 # Building and Deploying a Docker Application with Terraform and Amazon ECS
 
-## Introduction
+This guide provides step-by-step instructions on building a Docker application, pushing it to Amazon Elastic Container Registry (ECR), deploying it to Amazon Elastic Container Service (ECS) using Terraform, and handling common errors.
 
-This guide provides a step-by-step walkthrough of building a Docker image, tagging it, pushing it to Amazon Elastic Container Registry (ECR), and deploying it to Amazon Elastic Container Service (ECS) using Terraform. We'll cover setting up the Docker image, ECR repository, ECS task definition, and ECS service.
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Docker Image Creation and Push](#docker-image-creation-and-push)
+- [ECS Deployment Using Terraform](#ecs-deployment-using-terraform)
+- [Resource Destruction](#resource-destruction)
+- [Handling ECR Image Deletion Error](#handling-ecr-image-deletion-error)
+- [Conclusion](#conclusion)
 
 ## Prerequisites
 
-Before you begin, ensure you have the following:
+Before you begin, ensure you have:
 
 - An AWS account with the necessary permissions.
 - Docker installed on your local machine. You can download Docker from [Docker's official website](https://www.docker.com/get-started).
@@ -14,105 +21,80 @@ Before you begin, ensure you have the following:
 
 ## Docker Image Creation and Push
 
-### Step 1: Set Up the Docker Image
+1. **Set Up the Docker Image:**
 
-1. Create a directory for your Docker project and navigate to it in your terminal.
+   - Create a directory for your Docker project and navigate to it in your terminal:
 
-   ```sh
-   mkdir terraform-ecr-ecs-fargate
-   cd terraform-ecr-ecs-fargate
-   ```
+     ```sh
+     mkdir my-docker-app
+     cd my-docker-app
+     ```
 
-2. Inside this directory, create a `Dockerfile` with the following content:
+   - Inside this directory, create a `Dockerfile` with the content in the [example Dockerfile](./Dockerfile).
 
-   ```Dockerfile
-   FROM node:14
+   - Build the Docker image locally:
 
-   WORKDIR /app
-   COPY package*.json ./
-   RUN npm install
-   COPY . .
+     ```sh
+     docker build -t tf-sample-application-image .
+     ```
 
-   EXPOSE 8080
-   CMD [ "node", "index.js" ]
-   ```
+2. **Push Docker Image to Amazon ECR:**
 
-3. Build the Docker image locally by running the following command:
+   - Log in to Amazon ECR using the AWS CLI:
 
-   ```sh
-   docker build -t tf-sample-application-image .
-   ```
+     ```sh
+     aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com
+     ```
 
-### Step 2: Push Docker Image to Amazon ECR
+   - Tag the Docker image with your ECR repository URI:
 
-1. Log in to Amazon ECR using the AWS CLI:
+     ```sh
+     docker tag tf-sample-application-image:latest 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest
+     ```
 
-   ```sh
-   aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com
-   ```
+   - Push the tagged Docker image to Amazon ECR:
 
-2. Tag the Docker image with your ECR repository URI:
-
-   ```sh
-   docker tag tf-sample-application-image:latest 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest
-   ```
-
-3. Push the tagged Docker image to Amazon ECR:
-
-   ```sh
-   docker push 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest
-   ```
+     ```sh
+     docker push 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest
+     ```
 
 ## ECS Deployment Using Terraform
 
-### Step 3: Set Up the Terraform Configuration
+1. **Set Up the Terraform Configuration:**
 
-1. Create a `main.tf` file in your project directory and add the following Terraform configuration:
+   - Create a `main.tf` file in your project directory and add the Terraform configuration from the [example Terraform configuration](./main.tf).
 
-   ```hcl
-   provider "aws" {
-     region = "ap-southeast-1"  # Update with your desired region
-   }
+2. **Deploy ECS Service:**
 
-   resource "aws_ecr_repository" "my_ecr_repo" {
-     name = "tf-sample-application"
-   }
+   - Run the following Terraform commands to deploy the ECS service:
 
-   resource "aws_ecs_task_definition" "my_task_definition" {
-     # ... rest of your ECS task definition configuration ...
+     ```sh
+     terraform init
+     terraform apply
+     ```
 
-     container_definitions = jsonencode([
-       {
-         name  = "tf-sample-application"
-         image = "${aws_ecr_repository.my_ecr_repo.repository_url}:latest"
-         portMappings = [
-           {
-             containerPort = 8080
-             hostPort      = 8080
-             protocol      = "tcp"
-           }
-         ]
-         essential = true
-       }
-     ])
+## Resource Destruction
 
-     # ... rest of your ECS task definition configuration ...
-   }
+1. **Destroy Resources:**
 
-   # ... rest of your Terraform configuration ...
-   ```
+   - If you no longer need the resources, navigate to the project directory and run:
 
-### Step 4: Deploy ECS Service
+     ```sh
+     terraform destroy
+     ```
 
-1. Run the following Terraform commands to deploy the ECS service:
+## Handling ECR Image Deletion Error
 
-   ```sh
-   terraform init
-   terraform apply
-   ```
+1. **If You Encounter Deletion Error:**
+
+   - If you encounter an error when trying to delete an ECR image with a specific tag, such as `latest`, you can use the following AWS CLI command to forcefully delete it:
+
+     ```sh
+     aws ecr batch-delete-image --repository-name tf-sample-application --image-ids imageTag=latest
+     ```
 
 ## Conclusion
 
-By following this guide, you've learned how to build a Docker image, push it to Amazon ECR, and deploy an ECS service using Terraform. This approach provides a streamlined way to manage your containerized applications on AWS.
+By following this guide, you've learned how to build a Docker image, push it to Amazon ECR, deploy an ECS service using Terraform, and manage resources effectively. This approach provides a streamlined way to manage your containerized applications on AWS.
 
 Remember to replace placeholder values with your actual configuration details and paths. For more advanced scenarios, you can extend this configuration further.
