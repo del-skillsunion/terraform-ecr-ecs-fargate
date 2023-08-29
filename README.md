@@ -26,8 +26,8 @@ Before you begin, ensure you have:
    - Create a directory for your Docker project and navigate to it in your terminal:
 
      ```sh
-     mkdir my-docker-app
-     cd my-docker-app
+     mkdir tf-sample-application-image
+     cd tf-sample-application-image
      ```
 
    - Inside this directory, create a `Dockerfile` with the content in the [example Dockerfile](./Dockerfile).

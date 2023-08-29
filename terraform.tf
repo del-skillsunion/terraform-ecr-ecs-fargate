@@ -6,10 +6,6 @@ locals {
   application_name = "tf-sample-application"
 }
 
-resource "aws_ecr_repository" "my_ecr_repo" {
-  name = local.application_name
-}
-
 resource "aws_ecs_task_definition" "my_task_definition" {
   family                   = local.application_name
   network_mode             = "awsvpc"
@@ -19,7 +15,7 @@ resource "aws_ecs_task_definition" "my_task_definition" {
   container_definitions = jsonencode([
     {
       name  = local.application_name
-      image = "${aws_ecr_repository.my_ecr_repo.repository_url}:latest"
+      image = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest"  # Updated ECR URI
       portMappings = [
         {
           containerPort = 8080
