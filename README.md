@@ -26,8 +26,8 @@ Before you begin, ensure you have:
    - Create a directory for your Docker project and navigate to it in your terminal:
 
      ```sh
-     mkdir tf-sample-application-image
-     cd tf-sample-application-image
+     mkdir terraform-ecr-ecs-fargate
+     cd terraform-ecr-ecs-fargate
      ```
 
    - Inside this directory, create a `Dockerfile` with the content in the [example Dockerfile](./Dockerfile).
@@ -35,7 +35,7 @@ Before you begin, ensure you have:
    - Build the Docker image locally:
 
      ```sh
-     docker build -t tf-sample-application-image .
+     docker build -t terraform-ecr-ecs-fargate .
      ```
 
 2. **Push Docker Image to Amazon ECR:**
@@ -49,7 +49,7 @@ Before you begin, ensure you have:
    - Tag the Docker image with your ECR repository URI:
 
      ```sh
-     docker tag tf-sample-application-image:latest 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest
+     docker tag terraform-ecr-ecs-fargate:latest 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest
      ```
 
    - Push the tagged Docker image to Amazon ECR:
