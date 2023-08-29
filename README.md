@@ -62,7 +62,7 @@ Before you begin, ensure you have:
 
 1. **Set Up the Terraform Configuration:**
 
-   - Create a `main.tf` file in your project directory and add the Terraform configuration from the [example Terraform configuration](./main.tf).
+   - Create a `terraform.tf` file in your project directory and add the Terraform configuration from the [example Terraform configuration](./terraform.tf).
 
 2. **Deploy ECS Service:**
 
