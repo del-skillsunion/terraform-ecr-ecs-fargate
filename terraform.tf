@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 locals {
-  application_name = "tf-sample-application"
+  application_name = "tf-sample-application" # Update with your actual application name
 }
 
 resource "aws_ecs_task_definition" "my_task_definition" {
