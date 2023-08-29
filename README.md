@@ -19,8 +19,8 @@ Before you begin, ensure you have the following:
 1. Create a directory for your Docker project and navigate to it in your terminal.
 
    ```sh
-   mkdir my-docker-app
-   cd my-docker-app
+   mkdir terraform-ecr-ecs-fargate
+   cd terraform-ecr-ecs-fargate
    ```
 
 2. Inside this directory, create a `Dockerfile` with the following content:
