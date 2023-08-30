@@ -15,7 +15,7 @@ resource "aws_ecs_task_definition" "my_task_definition" {
   container_definitions = jsonencode([
     {
       name  = local.application_name
-      image = aws_ecr_repository.my_ecr_repo.repository_url  # Use the repository URL
+      image = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/${local.application_name}:latest"
       portMappings = [
         {
           containerPort = 8080
