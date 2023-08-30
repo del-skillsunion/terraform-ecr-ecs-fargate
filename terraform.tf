@@ -3,7 +3,12 @@ provider "aws" {
 }
 
 locals {
-  application_name = "tf-sample-application
+  application_name = "tf-sample-application"
+}
+
+# Create Amazon ECR repository
+resource "aws_ecr_repository" "my_ecr_repo" {
+  name = local.application_name
 }
 
 resource "aws_ecs_task_definition" "my_task_definition" {
@@ -15,7 +20,7 @@ resource "aws_ecs_task_definition" "my_task_definition" {
   container_definitions = jsonencode([
     {
       name  = local.application_name
-      image = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest"
+      image = aws_ecr_repository.my_ecr_repo.repository_url  # Use the repository URL
       portMappings = [
         {
           containerPort = 8080
