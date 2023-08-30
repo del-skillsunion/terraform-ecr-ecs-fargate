@@ -49,7 +49,6 @@ jobs:
   
   docker_build_push:
     name: Build Docker Image and Push to ECR
-    needs: ecr_creation
     runs-on: ubuntu-latest
 
     steps:
