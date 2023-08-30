@@ -46,7 +46,7 @@ resource "aws_ecs_service" "my_ecs_service" {
     security_groups = ["sg-b4db57fc"]
   }
   scheduling_strategy = "REPLICA"
-  desired_count       = 1
+  desired_count       = 2
   platform_version    = "LATEST"
   deployment_controller {
     type = "ECS"
