@@ -41,7 +41,6 @@ jobs:
 
     - name: Deploy using Terraform
       run: |
-        cd path/to/terraform/files
         terraform init
         terraform apply -auto-approve
 
