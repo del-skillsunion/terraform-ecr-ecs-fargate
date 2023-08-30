@@ -16,6 +16,9 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
+    - name: Build Docker image
+      run: docker buildx build --platform linux/amd64,linux/arm64 -t tf-sample-application-image:latest .
+
     - name: Build and Push Docker image to ECR
       env:
         ECR_REPO_URI: 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application
