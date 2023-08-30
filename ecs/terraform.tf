@@ -6,11 +6,6 @@ locals {
   application_name = "tf-sample-application"
 }
 
-# Create Amazon ECR repository
-resource "aws_ecr_repository" "my_ecr_repo" {
-  name = local.application_name
-}
-
 resource "aws_ecs_task_definition" "my_task_definition" {
   family                   = local.application_name
   network_mode             = "awsvpc"
