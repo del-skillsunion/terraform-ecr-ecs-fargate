@@ -34,6 +34,7 @@ jobs:
 
   build_docker_image:
     name: Build and Push Docker Image
+    needs: ecr_creation
     runs-on: ubuntu-latest
 
     steps:
@@ -58,6 +59,7 @@ jobs:
 
   ecs_deployment:
     name: Deploy ECS
+    needs: build_docker_image
     runs-on: ubuntu-latest
 
     steps:
