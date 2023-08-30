@@ -21,8 +21,8 @@ jobs:
         ECR_REPO_URI: 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application
       run: |
         docker buildx create --use
-        docker buildx build --platform linux/amd64,linux/arm64 -t $ECR_REPO_URI:latest --push .
-        docker buildx build --platform linux/amd64,linux/arm64 -t $ECR_REPO_URI:${GITHUB_SHA::8} --push .
+        docker buildx build --platform linux/arm64 -t $ECR_REPO_URI:latest --push .
+        docker buildx build --platform linux/arm64 -t $ECR_REPO_URI:${GITHUB_SHA::8} --push .
 
     - name: Log in to Amazon ECR
       uses: aws-actions/amazon-ecr-login@v1
