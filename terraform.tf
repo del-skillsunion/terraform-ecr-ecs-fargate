@@ -1,21 +1,21 @@
 provider "aws" {
-  region = "ap-southeast-1"  # Singapore
+  region = "ap-southeast-1"
 }
 
 locals {
-  application_name = "tf-sample-application" # Update with your actual application name
+  application_name = "tf-sample-application
 }
 
 resource "aws_ecs_task_definition" "my_task_definition" {
   family                   = local.application_name
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn      = "arn:aws:iam::255945442255:role/ecsTaskExecutionRole"  # Update with your actual role ARN
+  execution_role_arn      = "arn:aws:iam::255945442255:role/ecsTaskExecutionRole"
 
   container_definitions = jsonencode([
     {
       name  = local.application_name
-      image = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest"  # Updated ECR URI
+      image = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest"
       portMappings = [
         {
           containerPort = 8080
