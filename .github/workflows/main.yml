@@ -1,0 +1,35 @@
+name: Pipeline for tf-sample-application
+
+on:
+  push:
+    branches:
+      - main  # Adjust to the branch you want to trigger the workflow on
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and Push Docker image
+      env:
+        ECR_REPO_URI: 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application
+      run: |
+        docker buildx create --use
+        docker buildx build --platform linux/amd64,linux/arm64 -t $ECR_REPO_URI:latest .
+        docker buildx build --platform linux/amd64,linux/arm64 -t $ECR_REPO_URI:${GITHUB_SHA::8} .
+
+    - name: Log in to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Push Docker image to ECR
+      env:
+        ECR_REPO_URI: 255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application
+      run: |
+        docker push $ECR_REPO_URI:latest
+        docker push $ECR_REPO_URI:${GITHUB_SHA::8}
