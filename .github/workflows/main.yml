@@ -23,8 +23,8 @@ jobs:
 
   ecr_creation:
     name: Create ECR Repository
+    needs: run_unit_tests
     runs-on: ubuntu-latest
-
     steps:
     - name: Check out code
       uses: actions/checkout@v2
