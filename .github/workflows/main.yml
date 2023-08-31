@@ -6,50 +6,50 @@ on:
       - main
 
 jobs:
-  # ecr_creation:
-  #   name: Create ECR Repository
-  #   runs-on: ubuntu-latest
+  ecr_creation:
+    name: Create ECR Repository
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Check out code
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
     
-  #   - name: Configure AWS credentials
-  #     uses: aws-actions/configure-aws-credentials@v1
-  #     with:
-  #       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       aws-region: ap-southeast-1
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-southeast-1
 
-  #   - name: Set up Terraform
-  #     uses: hashicorp/setup-terraform@v1
-  #     with:
-  #       terraform_version: 1.0.0  # Use the desired version
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.0  # Use the desired version
 
-  #   - name: Check if ECR repository already exists
-  #     id: check_ecr
-  #     working-directory: ecr
-  #     run: |
-  #       terraform init
-  #       echo "Checking if ECR repository already exists..."
-  #       if terraform state show aws_ecr_repository.my_ecr_repo; then
-  #         echo "ECR repository already exists."
-  #         echo "::set-output name=exists::true"
-  #       else
-  #         echo "ECR repository doesn't exist."
-  #         echo "::set-output name=exists::false"
-  #       fi
+    - name: Check if ECR repository already exists
+      id: check_ecr
+      working-directory: ecr
+      run: |
+        terraform init
+        echo "Checking if ECR repository already exists..."
+        if terraform state show aws_ecr_repository.my_ecr_repo; then
+          echo "ECR repository already exists."
+          echo "::set-output name=exists::true"
+        else
+          echo "ECR repository doesn't exist."
+          echo "::set-output name=exists::false"
+        fi
 
-  #   - name: Deploy ECR using Terraform
-  #     if: steps.check_ecr.outputs.exists == 'false'
-  #     working-directory: ecr
-  #     run: |
-  #       terraform init
-  #       terraform apply -auto-approve
+    - name: Deploy ECR using Terraform
+      if: steps.check_ecr.outputs.exists == 'false'
+      working-directory: ecr
+      run: |
+        terraform init
+        terraform apply -auto-approve
   
   docker_build_push:
     name: Build Docker Image and Push to ECR
-    # needs: ecr_creation
+    needs: ecr_creation
     runs-on: ubuntu-latest
 
     steps:
