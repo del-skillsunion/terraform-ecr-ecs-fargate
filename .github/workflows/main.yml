@@ -23,7 +23,7 @@ jobs:
 
   run_unit_tests:
     name: Run Unit Tests
-    needs: vulnerabilities
+    needs: vulnerabilities-audit
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
