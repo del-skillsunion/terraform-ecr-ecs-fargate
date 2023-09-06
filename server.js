@@ -10,15 +10,15 @@ app.use('/vendor', express.static(__dirname + 'public/vendor'));
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
-app.get('', (req, res) => {
+app.get('', (_, res) => {
   res.render('index', { text: 'This is EJS' });
 });
 
-app.get('/meetings', (req, res) => {
+app.get('/meetings', (_, res) => {
   res.render('meetings', { text: 'Meetings Page' });
 });
 
-app.get('/meeting-details', (req, res) => {
+app.get('/meeting-details', (_, res) => {
   res.render('meeting-details', { text: 'Meeting Details Page' });
 });
 
