@@ -107,9 +107,9 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
-  ecs_deployment:
-    name: Deploy ECS
-    needs: docker_build_push
+  terraform_force_deployment:
+    name: Force New Deployment with Terraform
+    needs: [docker_build_push, ecr_creation]
     runs-on: ubuntu-latest
 
     steps:
@@ -128,8 +128,9 @@ jobs:
       with:
         terraform_version: 1.0.0
 
-    - name: Deploy ECS using Terraform
+    - name: Taint ECS service for force new deployment
       working-directory: ecs
       run: |
         terraform init
+        terraform taint aws_ecs_service.my_ecs_service
         terraform apply -auto-approve
