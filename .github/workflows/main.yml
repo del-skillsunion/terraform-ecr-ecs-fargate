@@ -64,11 +64,11 @@ jobs:
         terraform init
         echo "Checking if ECR repository already exists..."
         if terraform state show aws_ecr_repository.my_ecr_repo; then
-          echo "ECR repository already exists."
-          echo "::set-output name=exists::true"
-        else
           echo "ECR repository doesn't exist."
           echo "::set-output name=exists::false"
+        else
+          echo "ECR repository already exists."
+          echo "::set-output name=exists::true"
         fi
 
     - name: Deploy ECR using Terraform
