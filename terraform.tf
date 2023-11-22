@@ -8,19 +8,19 @@ locals {
 
 # Create Amazon ECR repository
 resource "aws_ecr_repository" "my_ecr_repo" {
-  name = local.application_name
+  name = "tf-sample-application"
 }
 
 resource "aws_ecs_task_definition" "my_task_definition" {
-  family                   = local.application_name
+  family                   = "tf-sample-application"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn      = "arn:aws:iam::255945442255:role/ecsTaskExecutionRole"
 
   container_definitions = jsonencode([
     {
-      name  = local.application_name
-      image = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/${local.application_name}:latest"
+      name  = "tf-sample-application"
+      image = "255945442255.dkr.ecr.ap-southeast-1.amazonaws.com/tf-sample-application:latest"
       portMappings = [
         {
           containerPort = 8080
@@ -37,11 +37,11 @@ resource "aws_ecs_task_definition" "my_task_definition" {
 }
 
 resource "aws_ecs_cluster" "my_ecs_cluster" {
-  name = "${local.application_name}-cluster"
+  name = "tf-sample-application-cluster"
 }
 
 resource "aws_ecs_service" "my_ecs_service" {
-  name            = "${local.application_name}-service"
+  name            = "tf-sample-application-service"
   cluster         = aws_ecs_cluster.my_ecs_cluster.id
   task_definition = aws_ecs_task_definition.my_task_definition.arn
   launch_type     = "FARGATE"
