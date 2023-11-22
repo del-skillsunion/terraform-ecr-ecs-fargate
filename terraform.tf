@@ -7,9 +7,9 @@ locals {
 }
 
 # Create Amazon ECR repository
-# resource "aws_ecr_repository" "my_ecr_repo" {
-#   name = local.application_name
-# }
+resource "aws_ecr_repository" "my_ecr_repo" {
+  name = local.application_name
+}
 
 resource "aws_ecs_task_definition" "my_task_definition" {
   family                   = local.application_name
@@ -46,9 +46,9 @@ resource "aws_ecs_service" "my_ecs_service" {
   task_definition = aws_ecs_task_definition.my_task_definition.arn
   launch_type     = "FARGATE"
   network_configuration {
-    subnets        = ["subnet-0bbc72597983abf38", "subnet-0c4291dae8812402c", "subnet-0d9626da5060628aa"]
+    subnets        = ["subnet-0d647d78d2309afc0", "subnet-0653b1187982942bb", "subnet-0028c0298206a2cb7"]
     assign_public_ip = true
-    security_groups = ["sg-04bce246adc7ccba0"]
+    security_groups = ["sg-0163f736062c9790b "]
   }
   scheduling_strategy = "REPLICA"
   desired_count       = 1
